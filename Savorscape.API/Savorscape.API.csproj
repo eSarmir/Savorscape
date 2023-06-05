@@ -15,4 +15,8 @@
     <ProjectReference Include="..\Savorscape.Database\Savorscape.Database.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
 </Project>
