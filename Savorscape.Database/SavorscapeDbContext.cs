@@ -10,6 +10,7 @@ namespace Savorscape.Database
         private readonly IConfiguration configuration;
 
         public DbSet<Recipe> Recipes { get; set; }
+        public DbSet<Ingredient> Ingredients { get; set; }
 
         public SavorscapeDbContext(IConfiguration configuration)
         {
