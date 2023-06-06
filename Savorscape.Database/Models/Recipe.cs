@@ -8,6 +8,7 @@
         public int PreparationTime { get; set; }
         public int Difficulty { get; set; }
         public int Servings { get; set; }
-        public required IEnumerable<Ingredient> Ingredients { get; set; }
+        public IEnumerable<Ingredient> Ingredients { get; set; } = Enumerable.Empty<Ingredient>();
+        public IEnumerable<Instruction> Instructions { get; set; } = Enumerable.Empty<Instruction>();
     }
 }

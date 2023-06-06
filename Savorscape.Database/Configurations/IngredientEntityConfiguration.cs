@@ -9,7 +9,7 @@ namespace Savorscape.Database.Configurations
         public void Configure(EntityTypeBuilder<Ingredient> builder)
         {
             builder
-                .HasKey(i => i.IngredientId);
+                .HasKey(i => i.IngredientID);
             builder
                 .Property(i => i.Name)
                 .IsRequired()
