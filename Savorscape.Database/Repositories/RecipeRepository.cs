@@ -17,7 +17,7 @@ namespace Savorscape.Database.Repositories
         }
         public void CreateRecipe(string title)
         {
-            Recipe toAdd = new () { Title = title };
+            Recipe toAdd = new () { Title = title, Description = ""};
 
             dbContext.Recipes.Add(toAdd);
 
