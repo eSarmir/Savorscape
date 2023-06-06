@@ -15,6 +15,20 @@ namespace Savorscape.Database.Configurations
                 .IsRequired();
             builder
                 .Property(r => r.Title)
+                .IsRequired()
+                .HasMaxLength(100);
+            builder
+                .Property(r => r.Description)
+                .IsRequired()
+                .HasMaxLength(300);
+            builder
+                .Property(r => r.PreparationTime)
+                .IsRequired();
+            builder
+                .Property(r => r.Difficulty)
+                .IsRequired();
+            builder
+                .Property(r => r.Servings)
                 .IsRequired();
         }
     }
