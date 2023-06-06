@@ -30,6 +30,13 @@ namespace Savorscape.Database.Configurations
             builder
                 .Property(r => r.Servings)
                 .IsRequired();
+            builder
+                .Property(r => r.Ingredients)
+                .IsRequired();
+            builder
+                .HasMany(r => r.Ingredients)
+                .WithOne(i => i.Recipe)
+                .HasForeignKey(i => i.IngredientId);
         }
     }
 }

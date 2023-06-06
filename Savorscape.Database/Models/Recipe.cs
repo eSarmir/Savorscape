@@ -8,5 +8,6 @@
         public int PreparationTime { get; set; }
         public int Difficulty { get; set; }
         public int Servings { get; set; }
+        public required IEnumerable<Ingredient> Ingredients { get; set; }
     }
 }
