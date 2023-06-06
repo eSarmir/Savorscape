@@ -4,7 +4,7 @@ using Savorscape.Database.Models;
 
 namespace Savorscape.Database.Configurations
 {
-    public class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
+    public class RecipeEntityConfiguration : IEntityTypeConfiguration<Recipe>
     {
         public void Configure(EntityTypeBuilder<Recipe> builder)
         {
