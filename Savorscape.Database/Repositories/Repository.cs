@@ -14,39 +14,6 @@ namespace Savorscape.Database.Repositories
             entities = context.Set<TEntity>();
         }
 
-        public virtual IEnumerable<TEntity> Get(
-            Expression<Func<TEntity, bool>> filter,
-            Func<IQueryable<TEntity>,
-            IOrderedQueryable<TEntity>> orderBy, string includeProperties = "")
-        {
-            IQueryable<TEntity> query = entities;
-
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
-
-            foreach (var includeProperty in includeProperties.Split
-                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
-            }
-
-            if (orderBy != null)
-            {
-                return orderBy(query).ToList();
-            }
-            else
-            {
-                return query.ToList();
-            }
-        }
-
-        public virtual IEnumerable<TEntity> GetAll()
-        {
-            return entities;
-        }
-
         public virtual TEntity? GetByID(int id)
         {
             return entities.Find(id);
@@ -82,6 +49,11 @@ namespace Savorscape.Database.Repositories
             }
 
             entities.Remove(entity);
+        }
+
+        public void SaveChanges()
+        {
+            context.SaveChanges();
         }
     }
 }

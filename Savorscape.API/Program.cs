@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Savorscape.Database;
 using Savorscape.Database.Repositories.IRepository;
 using Savorscape.Database.Repositories.Repository;
@@ -11,7 +12,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<SavorscapeDbContext>();
+builder.Services.AddDbContext<SavorscapeDbContext>(
+    context => context.UseNpgsql(
+        builder.Configuration.GetConnectionString("SavorscapeDatabase")));
 
 builder.Services.AddTransient<IRecipeRepository, RecipeRepository>();
 builder.Services.AddTransient<IIngredientRepository, IngredientRepository>();
