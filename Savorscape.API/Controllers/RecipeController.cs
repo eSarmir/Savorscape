@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Savorscape.API.Services;
+﻿using Microsoft.AspNetCore.Mvc;
+using Savorscape.Database.Models;
+using Savorscape.Database.Repositories.IRepository;
 
 namespace Savorscape.API.Controllers
 {
@@ -8,17 +8,17 @@ namespace Savorscape.API.Controllers
     [ApiController]
     public class RecipeController : ControllerBase
     {
-        private readonly IRecipeService recipeService;
+        private readonly IRecipeRepository recipeRepository;
 
-        public RecipeController(IRecipeService recipeService)
+        public RecipeController(IRecipeRepository recipeService)
         {
-            this.recipeService = recipeService;
+            this.recipeRepository = recipeService;
         }
 
         [HttpGet]
         public IActionResult Get(int id)
         {
-            var result = recipeService.GetRecipe(id);
+            var result = recipeRepository.GetByID(id);
 
             return Ok(result);
         }
@@ -26,7 +26,7 @@ namespace Savorscape.API.Controllers
         [HttpPost]
         public IActionResult Create(string title)
         {
-            recipeService.CreateRecipe(title);
+            recipeRepository.Create(new Recipe() { Title = title, Description = "" });
 
             return Ok();
         }

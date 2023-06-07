@@ -1,6 +1,6 @@
-using Savorscape.API.Services;
 using Savorscape.Database;
-using Savorscape.Database.Repositories;
+using Savorscape.Database.Repositories.IRepository;
+using Savorscape.Database.Repositories.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,9 +13,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<SavorscapeDbContext>();
 
-// Register DI
-builder.Services.AddTransient<IRecipeService, RecipeService>();
 builder.Services.AddTransient<IRecipeRepository, RecipeRepository>();
+builder.Services.AddTransient<IIngredientRepository, IngredientRepository>();
+builder.Services.AddTransient<IInstructionRepository, InstructionRepository>();
 
 var app = builder.Build();
 
