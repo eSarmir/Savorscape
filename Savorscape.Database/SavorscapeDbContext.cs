@@ -5,21 +5,13 @@ using System.Reflection;
 
 namespace Savorscape.Database
 {
-    public class SavorscapeDbContext : DbContext
+    public sealed class SavorscapeDbContext : DbContext
     {
-        private readonly IConfiguration configuration;
-
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
 
-        public SavorscapeDbContext(IConfiguration configuration)
+        public SavorscapeDbContext(DbContextOptions<SavorscapeDbContext> contextOptions) : base(contextOptions)
         {
-            this.configuration = configuration;
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseNpgsql(configuration.GetConnectionString("SavorscapeDatabase"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
