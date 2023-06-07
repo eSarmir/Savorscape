@@ -50,5 +50,10 @@ namespace Savorscape.Database.Repositories
 
             entities.Remove(entity);
         }
+
+        public void SaveChanges()
+        {
+            context.SaveChanges();
+        }
     }
 }
