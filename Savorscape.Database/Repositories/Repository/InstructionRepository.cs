@@ -8,5 +8,11 @@ namespace Savorscape.Database.Repositories.Repository
         public InstructionRepository(SavorscapeDbContext context) : base(context)
         {
         }
+
+        public IEnumerable<Instruction> GetAllRecipeInstructions(int recipeId)
+        {
+            return context.Instructions
+                .Where(i => i.RecipeId == recipeId);
+        }
     }
 }

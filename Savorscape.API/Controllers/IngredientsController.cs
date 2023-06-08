@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Savorscape.API.Contracts.Requests.Ingredient;
-using Savorscape.API.Contracts.Requests.Recipe;
 using Savorscape.API.Contracts.Responses.Ingredient;
-using Savorscape.API.Contracts.Responses.Recipe;
 using Savorscape.Database.Models;
 using Savorscape.Database.Repositories.IRepository;
-using Savorscape.Database.Repositories.Repository;
 
 namespace Savorscape.API.Controllers
 {
@@ -77,7 +73,7 @@ namespace Savorscape.API.Controllers
                 response);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("ingredients/{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public IActionResult Update(int id, UpdateIngredientRequest request)
         {
@@ -93,7 +89,7 @@ namespace Savorscape.API.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("ingredients/{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public IActionResult Delete(int id)
         {
