@@ -1,4 +1,4 @@
-﻿namespace Savorscape.API.Contracts.Responses
+﻿namespace Savorscape.API.Contracts.Responses.Recipe
 {
     public record RecipeResponse(
         int RecipeID,
