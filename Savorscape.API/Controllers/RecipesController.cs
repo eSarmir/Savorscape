@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
-using Savorscape.API.Contracts.Requests;
-using Savorscape.API.Contracts.Responses;
+using Savorscape.API.Contracts.Requests.Recipe;
+using Savorscape.API.Contracts.Responses.Recipe;
 using Savorscape.Database.Models;
 using Savorscape.Database.Repositories.IRepository;
 

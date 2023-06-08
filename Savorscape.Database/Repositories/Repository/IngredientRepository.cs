@@ -8,5 +8,11 @@ namespace Savorscape.Database.Repositories.Repository
         public IngredientRepository(SavorscapeDbContext context) : base(context)
         {
         }
+
+        public IEnumerable<Ingredient> GetAllRecipeIngredients(int recipeId)
+        {
+            return context.Ingredients
+                .Where(i => i.RecipeId == recipeId);
+        }
     }
 }

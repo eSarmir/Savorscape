@@ -1,6 +1,6 @@
-﻿namespace Savorscape.API.Contracts.Requests
+﻿namespace Savorscape.API.Contracts.Requests.Recipe
 {
-    public record CreateRecipeRequest(
+    public record UpdateRecipeRequest(
         string Title,
         string Description,
         int PreparationTime,
