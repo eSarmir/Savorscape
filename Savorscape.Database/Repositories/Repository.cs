@@ -19,9 +19,11 @@ namespace Savorscape.Database.Repositories
             return entities.Find(id);
         }
 
-        public virtual void Create(TEntity entity)
+        public virtual TEntity Create(TEntity entity)
         {
             entities.Add(entity);
+
+            return entity;
         }
 
         public virtual void Update(TEntity entity)
@@ -31,14 +33,16 @@ namespace Savorscape.Database.Repositories
             context.Entry(entity).State = EntityState.Modified;
         }
 
-        public virtual void Delete(int id)
+        public virtual bool Delete(int id)
         {
             var entity = GetByID(id);
 
             if (entity == null)
-                return;
+                return false;
 
             Delete(entity);
+
+            return true;
         }
 
         public virtual void Delete(TEntity entity)
