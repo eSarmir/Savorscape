@@ -72,6 +72,8 @@ namespace Savorscape.API.Controllers
                 Servings = request.Servings
             });
 
+            recipeRepository.SaveChanges();
+
             return NoContent();
         }
 
@@ -85,6 +87,8 @@ namespace Savorscape.API.Controllers
             {
                 return NotFound();
             }
+
+            recipeRepository.SaveChanges();
 
             return NoContent();
         }

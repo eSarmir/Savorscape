@@ -83,6 +83,8 @@ namespace Savorscape.API.Controllers
                 RecipeId = request.RecipeID
             });
 
+            instructionRepository.SaveChanges();
+
             return NoContent();
         }
 
@@ -96,6 +98,8 @@ namespace Savorscape.API.Controllers
             {
                 return NotFound();
             }
+
+            instructionRepository.SaveChanges();
 
             return NoContent();
         }
