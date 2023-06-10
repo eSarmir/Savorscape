@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Savorscape.Database.Models;
 using System.Reflection;
 
@@ -9,6 +8,7 @@ namespace Savorscape.Database
     {
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<Instruction> Instructions { get; set; }
 
         public SavorscapeDbContext(DbContextOptions<SavorscapeDbContext> contextOptions) : base(contextOptions)
         {
