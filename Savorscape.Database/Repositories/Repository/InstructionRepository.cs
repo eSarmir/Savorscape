@@ -14,5 +14,23 @@ namespace Savorscape.Database.Repositories.Repository
             return context.Instructions
                 .Where(i => i.RecipeId == recipeId);
         }
+
+        public Instruction? GetRecipeInstruction(int recipeId, int instructionId) 
+        {
+            return context.Instructions
+                .SingleOrDefault(i => i.RecipeId == recipeId && i.InstructionID == instructionId);
+        }
+
+        public bool DeleteRecipeInstruction(int recipeId, int id)
+        {
+            var entity = GetRecipeInstruction(recipeId, id);
+
+            if (entity == null)
+                return false;
+
+            Delete(entity);
+
+            return true;
+        }
     }
 }

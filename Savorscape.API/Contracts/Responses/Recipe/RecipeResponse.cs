@@ -1,4 +1,6 @@
-﻿namespace Savorscape.API.Contracts.Responses.Recipe
+﻿using Savorscape.Database.Models;
+
+namespace Savorscape.API.Contracts.Responses.Recipe
 {
     public record RecipeResponse(
         int RecipeID,
@@ -6,6 +8,7 @@
         string Description,
         int PreparationTime,
         int Difficulty,
-        int Servings
+        int Servings,
+        IEnumerable<Instruction> Instructions
         );
 }

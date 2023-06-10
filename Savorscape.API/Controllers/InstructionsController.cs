@@ -20,9 +20,9 @@ namespace Savorscape.API.Controllers
         [HttpGet("instructions/{id}")]
         [ProducesResponseType(typeof(InstructionsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Get(int id)
+        public IActionResult Get(int recipeId, int id)
         {
-            var ingredient = instructionRepository.GetByID(id);
+            var ingredient = instructionRepository.GetRecipeInstruction(recipeId, id);
 
             if (ingredient == null)
             {
@@ -59,6 +59,7 @@ namespace Savorscape.API.Controllers
             {
                 Order = request.Order,
                 Description = request.Description,
+                RecipeId = recipeId
             });
 
             instructionRepository.SaveChanges();
@@ -90,9 +91,9 @@ namespace Savorscape.API.Controllers
 
         [HttpDelete("instructions/{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int recipeId, int id)
         {
-            var wasDeleted = instructionRepository.Delete(id);
+            var wasDeleted = instructionRepository.DeleteRecipeInstruction(recipeId, id);
 
             if (wasDeleted == false)
             {

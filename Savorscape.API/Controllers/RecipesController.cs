@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 using Savorscape.API.Contracts.Requests.Recipe;
 using Savorscape.API.Contracts.Responses.Recipe;
 using Savorscape.Database.Models;
@@ -101,7 +100,8 @@ namespace Savorscape.API.Controllers
                             recipe.Description,
                             recipe.PreparationTime,
                             recipe.Difficulty,
-                            recipe.Servings);
+                            recipe.Servings,
+                            recipe.Instructions);
         }
     }
 }
