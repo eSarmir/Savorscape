@@ -20,16 +20,16 @@ namespace Savorscape.API.Controllers
         [HttpGet("ingredients/{id}")]
         [ProducesResponseType(typeof(IngredientResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Get(int id)
+        public IActionResult Get(int recipeId, int id)
         {
-            var ingredient = ingredientRepository.GetByID(id);
+            var ingredient = ingredientRepository.GetRecipeIngredient(recipeId, id);
 
             if (ingredient == null)
             {
                 return NotFound();
             }
 
-            IngredientResponse response = MapIngredientToIngredientResponse(ingredient);
+            IngredientResponse response = ResponseMappingHelper.MapIngredientToIngredientResponse(ingredient);
 
             return Ok(response);
         }
@@ -46,7 +46,7 @@ namespace Savorscape.API.Controllers
                 return NotFound();
             }
 
-            IEnumerable<IngredientResponse> response = ingredients.Select(MapIngredientToIngredientResponse);
+            IEnumerable<IngredientResponse> response = ingredients.Select(ResponseMappingHelper.MapIngredientToIngredientResponse);
 
             return Ok(response);
         }
@@ -65,7 +65,7 @@ namespace Savorscape.API.Controllers
 
             ingredientRepository.SaveChanges();
 
-            IngredientResponse response = MapIngredientToIngredientResponse(ingredient);
+            IngredientResponse response = ResponseMappingHelper.MapIngredientToIngredientResponse(ingredient);
 
             return CreatedAtAction(
                 nameof(Get),
@@ -93,9 +93,9 @@ namespace Savorscape.API.Controllers
 
         [HttpDelete("ingredients/{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int recipeId, int id)
         {
-            var wasDeleted = ingredientRepository.Delete(id);
+            var wasDeleted = ingredientRepository.DeleteRecipeIngredient(recipeId, id);
 
             if (wasDeleted == false)
             {
@@ -105,16 +105,6 @@ namespace Savorscape.API.Controllers
             ingredientRepository.SaveChanges();
 
             return NoContent();
-        }
-
-        private static IngredientResponse MapIngredientToIngredientResponse(Ingredient ingredient)
-        {
-            return new IngredientResponse(
-                ingredient.IngredientID,
-                ingredient.Name,
-                ingredient.Quantity,
-                ingredient.Unit
-                );
         }
     }
 }

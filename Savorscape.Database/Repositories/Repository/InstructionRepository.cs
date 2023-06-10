@@ -11,13 +11,13 @@ namespace Savorscape.Database.Repositories.Repository
 
         public IEnumerable<Instruction> GetAllRecipeInstructions(int recipeId)
         {
-            return context.Instructions
+            return entities
                 .Where(i => i.RecipeId == recipeId);
         }
 
         public Instruction? GetRecipeInstruction(int recipeId, int instructionId) 
         {
-            return context.Instructions
+            return entities
                 .SingleOrDefault(i => i.RecipeId == recipeId && i.InstructionID == instructionId);
         }
 

@@ -1,4 +1,5 @@
-﻿using Savorscape.API.Contracts.Responses.Instructions;
+﻿using Savorscape.API.Contracts.Responses.Ingredient;
+using Savorscape.API.Contracts.Responses.Instructions;
 
 namespace Savorscape.API.Contracts.Responses.Recipe
 {
@@ -9,6 +10,7 @@ namespace Savorscape.API.Contracts.Responses.Recipe
         int PreparationTime,
         int Difficulty,
         int Servings,
+        IEnumerable<IngredientResponse> Ingredients,
         IEnumerable<InstructionResponse> Instructions
         );
 }

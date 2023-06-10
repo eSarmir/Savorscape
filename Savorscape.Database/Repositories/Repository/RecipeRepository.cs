@@ -13,7 +13,8 @@ namespace Savorscape.Database.Repositories.Repository
         public Recipe? GetFullRecipeByID(int id)
         {
             return context.Recipes
-                .Include(recipe => recipe.Instructions)
+                .Include(r => r.Ingredients)
+                .Include(r => r.Instructions)
                 .FirstOrDefault(r => r.RecipeID == id);
         }
     }

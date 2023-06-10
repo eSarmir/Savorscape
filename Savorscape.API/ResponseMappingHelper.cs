@@ -1,4 +1,5 @@
-﻿using Savorscape.API.Contracts.Responses.Instructions;
+﻿using Savorscape.API.Contracts.Responses.Ingredient;
+using Savorscape.API.Contracts.Responses.Instructions;
 using Savorscape.API.Contracts.Responses.Recipe;
 using Savorscape.Database.Models;
 
@@ -15,7 +16,18 @@ namespace Savorscape.API
                             recipe.PreparationTime,
                             recipe.Difficulty,
                             recipe.Servings,
+                            recipe.Ingredients.Select(MapIngredientToIngredientResponse),
                             recipe.Instructions.Select(MapInstructionToInstructionResponse));
+        }
+
+        public static IngredientResponse MapIngredientToIngredientResponse(Ingredient ingredient)
+        {
+            return new IngredientResponse(
+                ingredient.IngredientID,
+                ingredient.Name,
+                ingredient.Quantity,
+                ingredient.Unit
+                );
         }
 
         public static InstructionResponse MapInstructionToInstructionResponse(Instruction instruction)
