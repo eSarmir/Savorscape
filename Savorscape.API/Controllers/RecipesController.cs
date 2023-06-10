@@ -22,14 +22,14 @@ namespace Savorscape.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Get(int id)
         {
-            var recipe = recipeRepository.GetByID(id);
+            var recipe = recipeRepository.GetFullRecipeByID(id);
 
             if (recipe == null) 
             {
                 return NotFound();
             }
 
-            RecipeResponse response = MapRecipeToRecipeResponse(recipe);
+            RecipeResponse response = ResponseMappingHelper.MapRecipeToRecipeResponse(recipe);
             
             return Ok(response);
         }
@@ -49,7 +49,7 @@ namespace Savorscape.API.Controllers
 
             recipeRepository.SaveChanges();
 
-            RecipeResponse response = MapRecipeToRecipeResponse(recipe);
+            RecipeResponse response = ResponseMappingHelper.MapRecipeToRecipeResponse(recipe);
 
             return CreatedAtAction(
                 nameof(Get),
@@ -90,18 +90,6 @@ namespace Savorscape.API.Controllers
             recipeRepository.SaveChanges();
 
             return NoContent();
-        }
-
-        private static RecipeResponse MapRecipeToRecipeResponse(Recipe recipe)
-        {
-            return new RecipeResponse(
-                            recipe.RecipeID,
-                            recipe.Title,
-                            recipe.Description,
-                            recipe.PreparationTime,
-                            recipe.Difficulty,
-                            recipe.Servings,
-                            recipe.Instructions);
         }
     }
 }

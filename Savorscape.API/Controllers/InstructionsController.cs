@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Savorscape.API.Contracts.Requests.Instruction;
 using Savorscape.API.Contracts.Responses.Instructions;
-using Savorscape.Database.Models;
 using Savorscape.Database.Repositories.IRepository;
 
 namespace Savorscape.API.Controllers
@@ -18,7 +17,7 @@ namespace Savorscape.API.Controllers
         }
 
         [HttpGet("instructions/{id}")]
-        [ProducesResponseType(typeof(InstructionsResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(InstructionResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Get(int recipeId, int id)
         {
@@ -29,13 +28,13 @@ namespace Savorscape.API.Controllers
                 return NotFound();
             }
 
-            InstructionsResponse response = MapInstructionToInstructionResponse(ingredient);
+            InstructionResponse response = ResponseMappingHelper.MapInstructionToInstructionResponse(ingredient);
 
             return Ok(response);
         }
 
         [HttpGet("instructions")]
-        [ProducesResponseType(typeof(IEnumerable<InstructionsResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<InstructionResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetAll(int recipeId)
         {
@@ -46,16 +45,16 @@ namespace Savorscape.API.Controllers
                 return NotFound();
             }
 
-            IEnumerable<InstructionsResponse> response = ingredients.Select(MapInstructionToInstructionResponse);
+            IEnumerable<InstructionResponse> response = ingredients.Select(ResponseMappingHelper.MapInstructionToInstructionResponse);
 
             return Ok(response);
         }
 
         [HttpPost("instructions")]
-        [ProducesResponseType(typeof(InstructionsResponse), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(InstructionResponse), StatusCodes.Status201Created)]
         public IActionResult Create(int recipeId, CreateInstructionRequest request)
         {
-            var ingredient = instructionRepository.Create(new Instruction()
+            var ingredient = instructionRepository.Create(new Database.Models.Instruction()
             {
                 Order = request.Order,
                 Description = request.Description,
@@ -64,7 +63,7 @@ namespace Savorscape.API.Controllers
 
             instructionRepository.SaveChanges();
 
-            InstructionsResponse response = MapInstructionToInstructionResponse(ingredient);
+            InstructionResponse response = ResponseMappingHelper.MapInstructionToInstructionResponse(ingredient);
 
             return CreatedAtAction(
                 nameof(Get),
@@ -76,7 +75,7 @@ namespace Savorscape.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public IActionResult Update(int id, UpdateInstructionRequest request)
         {
-            instructionRepository.Update(new Instruction()
+            instructionRepository.Update(new Database.Models.Instruction()
             {
                 InstructionID = id,
                 Order = request.Order,
@@ -103,16 +102,6 @@ namespace Savorscape.API.Controllers
             instructionRepository.SaveChanges();
 
             return NoContent();
-        }
-
-        private static InstructionsResponse MapInstructionToInstructionResponse(Instruction ingredient)
-        {
-            return new InstructionsResponse(
-                ingredient.InstructionID,
-                ingredient.Order,
-                ingredient.Description,
-                ingredient.RecipeId
-                );
         }
     }
 }
