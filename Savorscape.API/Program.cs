@@ -3,7 +3,17 @@ using Savorscape.Database;
 using Savorscape.Database.Repositories.IRepository;
 using Savorscape.Database.Repositories.Repository;
 
+var DevelopementAllowOrigin = "DevelopementAllowOrigin";
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(DevelopementAllowOrigin, policy =>
+    {
+        policy.AllowAnyOrigin();
+    });
+});
 
 // Add services to the container.
 
@@ -34,6 +44,11 @@ else
 }
 
 app.UseHttpsRedirection();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseCors(DevelopementAllowOrigin);
+}
 
 app.UseAuthorization();
 
