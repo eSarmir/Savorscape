@@ -2,7 +2,6 @@
 using Savorscape.API.Services.IService;
 using Savorscape.Database.Models;
 using Savorscape.Database.Repositories.IRepository;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Savorscape.API.Services.Service
 {
@@ -43,7 +42,7 @@ namespace Savorscape.API.Services.Service
 
         public Result<bool> UpdateRecipeInstruction(Instruction toUpdate)
         {
-            var instruction = instructionRepository.GetByID(toUpdate.InstructionID);
+            var instruction = instructionRepository.GetRecipeInstruction(toUpdate.RecipeId, toUpdate.InstructionID);
 
             if (instruction == null)
             {
