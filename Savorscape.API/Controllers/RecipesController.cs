@@ -14,9 +14,9 @@ namespace Savorscape.API.Controllers
     {
         private readonly IRecipeService recipeService;
 
-        public RecipesController(IRecipeService recipeRepository)
+        public RecipesController(IRecipeService recipeService)
         {
-            this.recipeService = recipeRepository;
+            this.recipeService = recipeService;
         }
 
         [HttpGet("{id}")]
@@ -35,6 +35,7 @@ namespace Savorscape.API.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(RecipeResponse), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Create(CreateRecipeRequest request)
         {
             var result = recipeService.CreateRecipe(new Recipe()
@@ -58,6 +59,7 @@ namespace Savorscape.API.Controllers
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ClientErrorResponse), StatusCodes.Status404NotFound)]
         public IActionResult Update(int id, UpdateRecipeRequest request) 
         {
             var result = recipeService.UpdateRecipe(new Recipe()
