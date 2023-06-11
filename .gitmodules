@@ -1,0 +1,3 @@
+[submodule "Savorscape-Frontend"]
+	path = Savorscape-Frontend
+	url = https://github.com/alex-nemeth/Savorscape-Frontend.git
