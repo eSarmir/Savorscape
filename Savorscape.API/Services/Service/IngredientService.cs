@@ -23,7 +23,7 @@ namespace Savorscape.API.Services.Service
         {
             var ingredient = ingredientRepository.GetRecipeIngredient(recipeId, ingredientId);
 
-            if (ingredient == null)
+            if (ingredient is null)
             {
                 return Result.Fail(GetIngredientNotFoundErrorMessage(recipeId, ingredientId));
             }
@@ -44,7 +44,7 @@ namespace Savorscape.API.Services.Service
         {
             var ingredient = ingredientRepository.GetRecipeIngredient(toUpdate.RecipeId, toUpdate.IngredientID);
 
-            if (ingredient == null)
+            if (ingredient is null)
             {
                 return Result.Fail(GetIngredientNotFoundErrorMessage(toUpdate.RecipeId, toUpdate.IngredientID));
             }
@@ -58,7 +58,7 @@ namespace Savorscape.API.Services.Service
         {
             var wasDeleted = ingredientRepository.DeleteRecipeIngredient(recipeId, ingredientId);
             
-            if (wasDeleted == false)
+            if (wasDeleted is false)
             {
                 return Result.Fail(GetIngredientNotFoundErrorMessage(recipeId, ingredientId));
             }

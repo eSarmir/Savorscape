@@ -18,7 +18,7 @@ namespace Savorscape.API.Services.Service
         {
             var recipe = recipeRepository.GetFullRecipeByID(id);
 
-            if (recipe == null)
+            if (recipe is null)
             {
                 return Result.Fail(GetRecipeNotFoundErrorMessage(id));
             }
@@ -39,7 +39,7 @@ namespace Savorscape.API.Services.Service
         {
             var recipe = recipeRepository.GetByID(toUpdate.RecipeID);
 
-            if (recipe == null)
+            if (recipe is null)
             {
                 return Result.Fail(GetRecipeNotFoundErrorMessage(toUpdate.RecipeID));
             }
@@ -55,7 +55,7 @@ namespace Savorscape.API.Services.Service
         {
             bool wasDeleted = recipeRepository.Delete(id);
 
-            if (!wasDeleted)
+            if (wasDeleted is false)
             {
                 return Result.Fail(GetRecipeNotFoundErrorMessage(id));
             }

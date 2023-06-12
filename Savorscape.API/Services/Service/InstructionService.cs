@@ -23,7 +23,7 @@ namespace Savorscape.API.Services.Service
         {
             var instruction = instructionRepository.GetRecipeInstruction(recipeId, id);
 
-            if (instruction == null)
+            if (instruction is null)
             {
                 return Result.Fail(GetInstructionNotFoundErrorMessage(recipeId, id));
             }
@@ -44,7 +44,7 @@ namespace Savorscape.API.Services.Service
         {
             var instruction = instructionRepository.GetRecipeInstruction(toUpdate.RecipeId, toUpdate.InstructionID);
 
-            if (instruction == null)
+            if (instruction is null)
             {
                 return Result.Fail(GetInstructionNotFoundErrorMessage(toUpdate.RecipeId, toUpdate.InstructionID));
             }
@@ -60,7 +60,7 @@ namespace Savorscape.API.Services.Service
         {
             var wasDeleted = instructionRepository.DeleteRecipeInstruction(recipeId, id);
             
-            if (wasDeleted == false) 
+            if (wasDeleted is false) 
             {
                 return Result.Fail(GetInstructionNotFoundErrorMessage(recipeId, id));
             }
