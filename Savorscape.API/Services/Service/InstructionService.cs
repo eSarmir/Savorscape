@@ -23,9 +23,9 @@ namespace Savorscape.API.Services.Service
         {
             var instruction = instructionRepository.GetRecipeInstruction(recipeId, id);
 
-            if (instruction == null) 
+            if (instruction == null)
             {
-                return Result.Fail($"The instruction with ID {id} in recipe with ID {recipeId} was not found!");
+                return Result.Fail(GetInstructionNotFoundErrorMessage(recipeId, id));
             }
 
             return instruction;
@@ -46,7 +46,7 @@ namespace Savorscape.API.Services.Service
 
             if (instruction == null)
             {
-                return Result.Fail($"The instruction with ID {toUpdate.InstructionID} in recipe with ID {toUpdate.RecipeId} was not found!");
+                return Result.Fail(GetInstructionNotFoundErrorMessage(toUpdate.RecipeId, toUpdate.InstructionID));
             }
 
             instructionRepository.Update(toUpdate);
@@ -62,10 +62,17 @@ namespace Savorscape.API.Services.Service
             
             if (wasDeleted == false) 
             {
-                return Result.Fail($"The instruction with ID {id} in recipe with ID {recipeId} was not found!");
+                return Result.Fail(GetInstructionNotFoundErrorMessage(recipeId, id));
             }
 
+            instructionRepository.SaveChanges();
+
             return true;
+        }
+
+        private static string GetInstructionNotFoundErrorMessage(int recipeId, int id)
+        {
+            return $"The instruction with ID {id} in recipe with ID {recipeId} was not found!";
         }
     }
 }
