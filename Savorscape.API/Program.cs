@@ -1,3 +1,5 @@
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Savorscape.API.Services.IService;
 using Savorscape.API.Services.Service;
@@ -28,6 +30,9 @@ builder.Services.AddDbContext<SavorscapeDbContext>(
     context => context.UseNpgsql(
         builder.Configuration.GetConnectionString("SavorscapeDatabase")));
 
+builder.Services.AddHealthChecks()
+    .AddNpgSql(builder.Configuration.GetConnectionString("SavorscapeDatabase"));
+
 builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
 builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
 builder.Services.AddScoped<IInstructionRepository, InstructionRepository>();
@@ -48,6 +53,11 @@ else
 }
 
 app.UseHttpsRedirection();
+
+app.MapHealthChecks("/_health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 if (app.Environment.IsDevelopment())
 {
