@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Savorscape.API.Contracts.Requests.Queries;
 using Savorscape.API.Contracts.Requests.Recipe;
+using Savorscape.API.Contracts.Responses;
 using Savorscape.API.Contracts.Responses.Recipe;
+using Savorscape.API.Extensions;
+using Savorscape.API.Services.IService;
 using Savorscape.Database.Models;
-using Savorscape.Database.Repositories.IRepository;
 
 namespace Savorscape.API.Controllers
 {
@@ -10,35 +13,51 @@ namespace Savorscape.API.Controllers
     [ApiController]
     public class RecipesController : ControllerBase
     {
-        private readonly IRecipeRepository recipeRepository;
+        private readonly IRecipeService recipeService;
 
-        public RecipesController(IRecipeRepository recipeRepository)
+        public RecipesController(IRecipeService recipeService)
         {
-            this.recipeRepository = recipeRepository;
+            this.recipeService = recipeService;
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(RecipeResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ClientErrorResponse), StatusCodes.Status404NotFound)]
         public IActionResult Get(int id)
         {
-            var recipe = recipeRepository.GetFullRecipeByID(id);
+            var result = recipeService.GetFullRecipeByID(id);
 
-            if (recipe == null) 
-            {
-                return NotFound();
-            }
+            return result
+                .MatchToActionResult(
+                    recipe => Ok(ResponseMappingHelper.MapRecipeToRecipeResponse(recipe)),
+                    err => NotFound(ResponseMappingHelper.MapStringToClientErrorResponse(err.Message))
+                );
+        }
 
-            RecipeResponse response = ResponseMappingHelper.MapRecipeToRecipeResponse(recipe);
-            
-            return Ok(response);
+        [HttpGet()]
+        [ProducesResponseType(typeof(RecipesResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Get([FromQuery] PaginationQuery paginationQuery) 
+        {
+            var result = recipeService.GetPaginatedRecipes(paginationQuery);
+
+            return result
+                .MatchToActionResult(
+                    recipes => Ok(new RecipesResponse(
+                        paginationQuery.PageNumber,
+                        paginationQuery.PageSize,
+                        recipes.Select(r => ResponseMappingHelper.MapRecipeToRecipeResponse(r))
+                    )),
+                    err => BadRequest()
+                );
         }
 
         [HttpPost]
         [ProducesResponseType(typeof(RecipeResponse), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Create(CreateRecipeRequest request)
         {
-            var recipe = recipeRepository.Create(new Recipe()
+            var result = recipeService.CreateRecipe(new Recipe()
             {
                 Title = request.Title,
                 Description = request.Description,
@@ -47,21 +66,22 @@ namespace Savorscape.API.Controllers
                 Servings = request.Servings
             });
 
-            recipeRepository.SaveChanges();
-
-            RecipeResponse response = ResponseMappingHelper.MapRecipeToRecipeResponse(recipe);
-
-            return CreatedAtAction(
-                nameof(Get),
-                new { Id = response.RecipeID },
-                response);
+            return result
+                .MatchToActionResult(
+                    recipe => CreatedAtAction(
+                        nameof(Get), 
+                        new { Id = recipe.RecipeID }, 
+                        ResponseMappingHelper.MapRecipeToRecipeResponse(recipe)),
+                    err => BadRequest()
+                );
         }
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ClientErrorResponse), StatusCodes.Status404NotFound)]
         public IActionResult Update(int id, UpdateRecipeRequest request) 
         {
-            recipeRepository.Update(new Recipe()
+            var result = recipeService.UpdateRecipe(new Recipe()
             {
                 RecipeID = id,
                 Title = request.Title,
@@ -71,25 +91,25 @@ namespace Savorscape.API.Controllers
                 Servings = request.Servings
             });
 
-            recipeRepository.SaveChanges();
-
-            return NoContent();
+            return result
+                .MatchToActionResult(
+                    wasUpdated => NoContent(),
+                    err => NotFound(ResponseMappingHelper.MapStringToClientErrorResponse(err.Message))
+                );
         }
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ClientErrorResponse), StatusCodes.Status404NotFound)]
         public IActionResult Delete(int id)
         {
-            var wasDeleted = recipeRepository.Delete(id);
+            var result = recipeService.DeleteRecipe(id);
 
-            if (wasDeleted == false)
-            {
-                return NotFound();
-            }
-
-            recipeRepository.SaveChanges();
-
-            return NoContent();
+            return result
+                .MatchToActionResult(
+                    wasDeleted => NoContent(),
+                    err => NotFound(ResponseMappingHelper.MapStringToClientErrorResponse(err.Message))
+                );
         }
     }
 }

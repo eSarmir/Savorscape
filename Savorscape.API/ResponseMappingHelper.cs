@@ -1,4 +1,5 @@
-﻿using Savorscape.API.Contracts.Responses.Ingredient;
+﻿using Savorscape.API.Contracts.Responses;
+using Savorscape.API.Contracts.Responses.Ingredient;
 using Savorscape.API.Contracts.Responses.Instructions;
 using Savorscape.API.Contracts.Responses.Recipe;
 using Savorscape.Database.Models;
@@ -38,6 +39,11 @@ namespace Savorscape.API
                 instruction.Description,
                 instruction.RecipeId
                 );
+        }
+
+        public static ClientErrorResponse MapStringToClientErrorResponse(string message)
+        {
+            return new ClientErrorResponse(message);
         }
     }
 }
