@@ -1,4 +1,5 @@
 ﻿using FluentResults;
+using Savorscape.API.Contracts.Requests.Queries;
 using Savorscape.API.Services.IService;
 using Savorscape.Database.Models;
 using Savorscape.Database.Repositories.IRepository;
@@ -24,6 +25,15 @@ namespace Savorscape.API.Services.Service
             }
 
             return recipe;
+        }
+
+        public Result<IEnumerable<Recipe>> GetPaginatedRecipes(PaginationQuery paginationQuery)
+        {
+            int skip = (paginationQuery.PageNumber - 1) * paginationQuery.PageSize;
+
+            var recipes = recipeRepository.GetPaginatedRecipes(skip, paginationQuery.PageSize);
+
+            return Result.Ok(recipes);
         }
 
         public Result<Recipe> CreateRecipe(Recipe toCreate)

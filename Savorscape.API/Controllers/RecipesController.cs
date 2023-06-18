@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Savorscape.API.Contracts.Requests.Queries;
 using Savorscape.API.Contracts.Requests.Recipe;
 using Savorscape.API.Contracts.Responses;
 using Savorscape.API.Contracts.Responses.Recipe;
@@ -30,6 +31,24 @@ namespace Savorscape.API.Controllers
                 .MatchToActionResult(
                     recipe => Ok(ResponseMappingHelper.MapRecipeToRecipeResponse(recipe)),
                     err => NotFound(ResponseMappingHelper.MapStringToClientErrorResponse(err.Message))
+                );
+        }
+
+        [HttpGet()]
+        [ProducesResponseType(typeof(RecipesResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult Get([FromQuery] PaginationQuery paginationQuery) 
+        {
+            var result = recipeService.GetPaginatedRecipes(paginationQuery);
+
+            return result
+                .MatchToActionResult(
+                    recipes => Ok(new RecipesResponse(
+                        paginationQuery.PageNumber,
+                        paginationQuery.PageSize,
+                        recipes.Select(r => ResponseMappingHelper.MapRecipeToRecipeResponse(r))
+                    )),
+                    err => BadRequest()
                 );
         }
 
